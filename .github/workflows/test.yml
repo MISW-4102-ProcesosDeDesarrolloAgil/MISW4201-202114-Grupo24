@@ -25,3 +25,5 @@ jobs:
       with:
         version: 12
     - run: git checkout -b 'HUXX_featureTest'
+    - uses: actions/checkout@v2
+    - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}." 
