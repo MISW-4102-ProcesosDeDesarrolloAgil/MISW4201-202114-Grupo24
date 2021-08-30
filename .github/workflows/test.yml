@@ -24,4 +24,4 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         version: 12
-    - run: git checkout -b HUXX_featureTest
+    - run: git checkout -b 'HUXX_featureTest'
