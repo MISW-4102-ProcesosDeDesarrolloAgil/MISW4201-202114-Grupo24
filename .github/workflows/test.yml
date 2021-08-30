@@ -2,44 +2,42 @@
 
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      body:
+        default: ""
+      test:
+        default: "false"
+  pull_request_target:
 
 jobs:
- build:
-
+  check-body-length:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
+      - name: check
+        env:
+          PRNUM: ${{ github.event.pull_request.number }}
+          PRBODY: ${{ github.event.pull_request.body }}
+          TESTBODY: ${{ github.event.inputs.body }}
+          TEST: ${{ github.event.inputs.test }}
         run: |
-          python -m pip install --upgrade pip
-          pip install flake8 pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Lint with flake8
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Test with pytest
-        run: |
-          pytest
-    
+          if [ "$TEST" = "true" ]
+          then
+            PRBODY=$TESTBODY
+          fi
+
+          commentPR () {
+            if [ "$TEST" = "true" ]
+            then
+              echo "would comment: '${1}'"
+            else
+              gh pr comment $PRNUM -b "${1}"
+            fi
+          }
+
+          if [ "$PRBODY" = "" ]
+          then
+            commentPR "Thanks! Please add a body so we can better review your contribution."
+          fi
     
