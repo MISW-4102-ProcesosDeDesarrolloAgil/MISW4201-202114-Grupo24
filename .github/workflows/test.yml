@@ -1,43 +1,18 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: Node Continuous Integration
 
 on:
-  workflow_dispatch:
-    inputs:
-      body:
-        default: ""
-      test:
-        default: "false"
-  pull_request_target:
+  pull_request:
+    branches: [ master ]
+
 
 jobs:
-  check-body-length:
+  test_pull_request:
     runs-on: ubuntu-latest
     steps:
-      - name: check
-        env:
-          PRNUM: ${{ github.event.pull_request.number }}
-          PRBODY: ${{ github.event.pull_request.body }}
-          TESTBODY: ${{ github.event.inputs.body }}
-          TEST: ${{ github.event.inputs.test }}
-        run: |
-          if [ "$TEST" = "true" ]
-          then
-            PRBODY=$TESTBODY
-          fi
-
-          commentPR () {
-            if [ "$TEST" = "true" ]
-            then
-              echo "would comment: '${1}'"
-            else
-              gh pr comment $PRNUM -b "${1}"
-            fi
-          }
-
-          if [ "$PRBODY" = "" ]
-          then
-            commentPR "Thanks! Please add a body so we can better review your contribution."
-          fi
-    
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm ci
+      - run: npm test
+      - run: npm run build`
