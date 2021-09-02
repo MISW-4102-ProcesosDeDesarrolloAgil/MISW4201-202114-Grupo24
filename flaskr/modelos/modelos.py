@@ -31,6 +31,12 @@ class Album(db.Model):
     medio = db.Column(db.Enum(Medio))
     usuario = db.Column(db.Integer, db.ForeignKey("usuario.id"))
     canciones = db.relationship('Cancion', secondary = 'album_cancion', back_populates="albumes")
+    genero = db.Column(db.Integer, db.ForeignKey("genero.id"))
+
+class Genero(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(128))
+    albumes = db.relationship('Album', cascade='all, delete, delete-orphan')
     
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
