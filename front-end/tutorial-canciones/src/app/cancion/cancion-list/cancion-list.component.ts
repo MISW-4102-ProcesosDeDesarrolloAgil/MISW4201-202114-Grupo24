@@ -48,14 +48,15 @@ export class CancionListComponent implements OnInit {
   onSelect(cancion: Cancion, indice: number){
     this.indiceSeleccionado = indice
     this.cancionSeleccionada = cancion
-    this.cancionService.getAlbumesCancion(cancion.id)
-    .subscribe(albumes => {
-      this.cancionSeleccionada.albumes = albumes
-    },
-    error => {
-      this.showError(`Ha ocurrido un error: ${error.message}`)
-    })
-    
+    if(cancion !== undefined) {
+      this.cancionService.getAlbumesCancion(cancion.id)
+      .subscribe(albumes => {
+        this.cancionSeleccionada.albumes = albumes
+      },
+      error => {
+        this.showError(`Ha ocurrido un error: ${error.message}`)
+      })
+    }
   }
 
   buscarCancion(busqueda: string){
@@ -73,6 +74,26 @@ export class CancionListComponent implements OnInit {
     .subscribe(cancion => {
       this.ngOnInit()
       this.showSuccess()
+    },
+    error=> {
+      this.showError("Ha ocurrido un error. " + error.message)
+    })
+  }
+
+  /**
+   * Cambia el valor de favorita para una canción dada e invoca
+   * el servicio para actualiar la información de la canción
+   *
+   * @param cancion a modificar el valor de favorita
+   * @param indice de la posición de la canción en el listado
+   */
+  seleccionarFavoria(cancion: Cancion, indice: number) {
+    cancion.favorita = !cancion.favorita
+    this.mostrarCanciones[indice].favorita = cancion.favorita
+
+    this.cancionService.editarCancion(cancion, cancion.id)
+    .subscribe(() => {
+      this.ngOnInit()
     },
     error=> {
       this.showError("Ha ocurrido un error. " + error.message)
