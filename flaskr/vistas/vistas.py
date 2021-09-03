@@ -82,7 +82,7 @@ class VistaAlbumsUsuario(Resource):
 
     @jwt_required()
     def post(self, id_usuario):
-        nuevo_album = Album(titulo=request.json["titulo"], anio=request.json["anio"], descripcion=request.json["descripcion"], medio=request.json["medio"])
+        nuevo_album = Album(titulo=request.json["titulo"], anio=request.json["anio"], descripcion=request.json["descripcion"], medio=request.json["medio"], genero=request.json["genero"])
         usuario = Usuario.query.get_or_404(id_usuario)
         usuario.albumes.append(nuevo_album)
 
@@ -141,4 +141,3 @@ class VistaAlbum(Resource):
         db.session.delete(album)
         db.session.commit()
         return '',204
-
