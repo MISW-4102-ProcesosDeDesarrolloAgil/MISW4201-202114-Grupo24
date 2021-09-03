@@ -23,6 +23,13 @@ class Medio(enum.Enum):
    CASETE = 2
    CD = 3
 
+class Genero(enum.Enum):
+    SALSA =1
+    ROCK =2
+    POP = 3
+    BALADA = 4
+    CLASICA = 5
+
 class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(128))
@@ -31,12 +38,7 @@ class Album(db.Model):
     medio = db.Column(db.Enum(Medio))
     usuario = db.Column(db.Integer, db.ForeignKey("usuario.id"))
     canciones = db.relationship('Cancion', secondary = 'album_cancion', back_populates="albumes")
-    genero = db.Column(db.Integer, db.ForeignKey("genero.id"))
-
-class Genero(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(128))
-    albumes = db.relationship('Album', cascade='all, delete, delete-orphan')
+    genero = db.Column(db.Enum(Genero))
     
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
