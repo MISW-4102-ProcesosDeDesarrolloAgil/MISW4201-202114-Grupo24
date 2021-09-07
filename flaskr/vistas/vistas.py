@@ -1,12 +1,16 @@
+import json
+from flaskr.modelos.modelos import EnumADiccionario, Genero, GeneroSchema
 from flask import request
 from ..modelos import db, Cancion, CancionSchema, Usuario, UsuarioSchema, Album, AlbumSchema
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 
+
 cancion_schema = CancionSchema()
 usuario_schema = UsuarioSchema()
 album_schema = AlbumSchema()
+genero_schema = GeneroSchema()
 
 
 class VistaCanciones(Resource):
@@ -141,3 +145,8 @@ class VistaAlbum(Resource):
         db.session.delete(album)
         db.session.commit()
         return '',204
+
+class VistaGenero(Resource):
+    def get(self): 
+        enum_list = list(map(lambda g: g.name, Genero))
+        return json.dumps(enum_list)

@@ -22,7 +22,7 @@ class Medio(enum.Enum):
    DISCO = 1
    CASETE = 2
    CD = 3
-
+"""Clase que contiene el genero @"""
 class Genero(enum.Enum):
     SALSA =1
     ROCK =2
@@ -71,3 +71,8 @@ class UsuarioSchema(SQLAlchemyAutoSchema):
          model = Usuario
          include_relationships = True
          load_instance = True
+
+class GeneroSchema():
+    def json():
+        genero = EnumADiccionario(attribute=("genero"))
+        return genero
