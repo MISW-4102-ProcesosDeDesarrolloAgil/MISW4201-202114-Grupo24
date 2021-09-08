@@ -71,8 +71,3 @@ class UsuarioSchema(SQLAlchemyAutoSchema):
          model = Usuario
          include_relationships = True
          load_instance = True
-
-class GeneroSchema():
-    def json():
-        genero = EnumADiccionario(attribute=("genero"))
-        return genero

@@ -1,5 +1,5 @@
 import json
-from flaskr.modelos.modelos import EnumADiccionario, Genero, GeneroSchema
+from flaskr.modelos.modelos import Genero
 from flask import request
 from ..modelos import db, Cancion, CancionSchema, Usuario, UsuarioSchema, Album, AlbumSchema
 from flask_restful import Resource
@@ -10,7 +10,6 @@ from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identi
 cancion_schema = CancionSchema()
 usuario_schema = UsuarioSchema()
 album_schema = AlbumSchema()
-genero_schema = GeneroSchema()
 
 
 class VistaCanciones(Resource):

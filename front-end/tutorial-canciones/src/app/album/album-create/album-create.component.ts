@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AlbumService } from '../album.service';
-import { Album, Medio } from '../album';
+import { Album, Medio, Generos } from '../album';
 
 @Component({
   selector: 'app-album-create',
@@ -30,6 +30,23 @@ export class AlbumCreateComponent implements OnInit {
       valor: 3
     }
   ]
+  generos:Array<Generos> = [
+    {
+      llave:"SALSA",
+    },
+    {
+      llave:"ROCK",
+    },
+    {
+      llave:"POP",
+    },
+    {
+      llave:"BALADA",
+    },
+    {
+      llave:"CLASICA",
+    }
+  ]
 
   constructor(
     private albumService: AlbumService,
@@ -51,7 +68,8 @@ export class AlbumCreateComponent implements OnInit {
         titulo: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(128)]],
         anio: ["", [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
         descripcion: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(512)]],
-        medio: ["", [Validators.required]]
+        medio: ["", [Validators.required]],
+        genero: ["", [Validators.required]]
       })
     }
   }
@@ -92,6 +110,7 @@ export class AlbumCreateComponent implements OnInit {
         this.showError("Ha ocurrido un error. " + error.message)
       }
     })
+    console.info(newAlbum)
   }
 
 }
