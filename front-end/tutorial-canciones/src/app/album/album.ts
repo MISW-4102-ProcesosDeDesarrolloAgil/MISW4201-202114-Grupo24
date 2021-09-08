@@ -45,7 +45,9 @@ export class Medio{
         this.valor = valor
     }
 }
-
+/*
+  Se lista los generos musicales
+ */
 export class Generos{
   llave: string;
   constructor(llave: string){

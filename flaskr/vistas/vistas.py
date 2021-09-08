@@ -81,6 +81,7 @@ class VistaLogIn(Resource):
             token_de_acceso = create_access_token(identity = usuario.id)
             return {"mensaje":"Inicio de sesión exitoso", "token": token_de_acceso}
 
+"""Se agregan los generos @William Sanchez"""
 class VistaAlbumsUsuario(Resource):
 
     @jwt_required()
@@ -145,6 +146,7 @@ class VistaAlbum(Resource):
         db.session.commit()
         return '',204
 
+"""Se listan los generos @William Sanchez"""
 class VistaGenero(Resource):
     def get(self): 
         enum_list = list(map(lambda g: g.name, Genero))
