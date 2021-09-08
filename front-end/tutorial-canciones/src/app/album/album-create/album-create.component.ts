@@ -110,7 +110,7 @@ export class AlbumCreateComponent implements OnInit {
         this.showError("Ha ocurrido un error. " + error.message)
       }
     })
-    console.info(newAlbum)
+
   }
 
 }
