@@ -22,7 +22,7 @@ class Medio(enum.Enum):
    DISCO = 1
    CASETE = 2
    CD = 3
-"""Clase que contiene el genero @"""
+"""Clase que contiene el genero @Juan Daza"""
 class Genero(enum.Enum):
     SALSA =1
     ROCK =2
@@ -30,6 +30,7 @@ class Genero(enum.Enum):
     BALADA = 4
     CLASICA = 5
 
+"""Se adjunta atributo genero @William Sanchez"""
 class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(128))
@@ -57,7 +58,8 @@ class CancionSchema(SQLAlchemyAutoSchema):
          model = Cancion
          include_relationships = True
          load_instance = True
-
+         
+"""Se adjunta atributo genero @William Sanchez"""
 class AlbumSchema(SQLAlchemyAutoSchema):
     medio = EnumADiccionario(attribute=("medio"))
     genero = EnumADiccionario(attribute=("genero"))

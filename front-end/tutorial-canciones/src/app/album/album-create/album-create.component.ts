@@ -30,6 +30,7 @@ export class AlbumCreateComponent implements OnInit {
       valor: 3
     }
   ]
+  /*Se lleva a cabo la lista de Generos */
   generos:Array<Generos> = [
     {
       llave:"SALSA",
@@ -110,7 +111,7 @@ export class AlbumCreateComponent implements OnInit {
         this.showError("Ha ocurrido un error. " + error.message)
       }
     })
-    console.info(newAlbum)
+
   }
 
 }
