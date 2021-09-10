@@ -3,13 +3,24 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow import fields
 import enum
 
-
 db = SQLAlchemy()
 
 albumes_canciones = db.Table('album_cancion',
     db.Column('album_id', db.Integer, db.ForeignKey('album.id'), primary_key = True),
     db.Column('cancion_id', db.Integer, db.ForeignKey('cancion.id'), primary_key = True))
 
+class Medio(enum.Enum):
+   DISCO = 1
+   CASETE = 2
+   CD = 3
+
+class Genero(enum.Enum):
+    SALSA =1
+    ROCK =2
+    POP = 3
+    BALADA = 4
+    CLASICA = 5
+    
 class Cancion(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     titulo = db.Column(db.String(128))
@@ -17,18 +28,8 @@ class Cancion(db.Model):
     segundos = db.Column(db.Integer)
     interprete = db.Column(db.String(128))
     albumes = db.relationship('Album', secondary = 'album_cancion', back_populates="canciones")
-
-class Medio(enum.Enum):
-   DISCO = 1
-   CASETE = 2
-   CD = 3
-"""Clase que contiene el genero @Juan Daza"""
-class Genero(enum.Enum):
-    SALSA =1
-    ROCK =2
-    POP = 3
-    BALADA = 4
-    CLASICA = 5
+    ## @farojasp1 se adiciona campo para marca favorita - HU25
+    favorita = db.Column(db.Boolean)
 
 """Se adjunta atributo genero @William Sanchez"""
 class Album(db.Model):

@@ -4,8 +4,11 @@
     <div class="col-10">
       <div class="card mx-3 my-5">
         <div class="row">
-          <div class="col-12 text-center">
-            <p class="mt-5 mb-2 fs-3 fw-bold">Crear Canción</p>
+          <div class="col-12 text-center" class="favorite-div">
+            <p class="mt-5 mb-2 fs-3 fw-bold" style="margin-right: 10px;">Crear Canción</p>
+            <button class="favorite-button favorite-button-p" (click)="establecerFavoria()">
+              <i class="fa" [ngClass]="{'fa-heart' : esFavorita() , 'fa-heart-o': !esFavorita() }"></i>
+            </button>
           </div>
         </div>
 
@@ -89,6 +92,8 @@
               </div>
             </div>
           </div>
+
+          <input type="hidden" formControlName="favorita">
 
           <div class="row mt-4">
             <div class="col-6 text-end">
