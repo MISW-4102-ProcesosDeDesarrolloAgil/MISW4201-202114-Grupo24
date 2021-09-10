@@ -1,6 +1,7 @@
 from flask import request
 from ..modelos import db, Cancion, CancionSchema, Album
 from flask_restful import Resource
+from sqlalchemy import desc
 
 
 cancion_schema = CancionSchema()
@@ -15,8 +16,7 @@ class VistaCanciones(Resource):
         return cancion_schema.dump(nueva_cancion)
 
     def get(self):
-        return [cancion_schema.dump(ca) for ca in Cancion.query.all()]
-        
+        return [cancion_schema.dump(ca) for ca in Cancion.query.order_by(desc(Cancion.favorita)).all()]
 
 class VistaCancion(Resource):
 
