@@ -146,3 +146,4 @@ cython_debug/
 #DataBase
 test.db
 node_modules
+tutorialescanciones.db
