@@ -16,6 +16,7 @@ class VistaCanciones(Resource):
         return cancion_schema.dump(nueva_cancion)
 
     def get(self):
+        ## @farojasp1 se adiciona ordenamiento por marca favorita - HU26
         return [cancion_schema.dump(ca) for ca in Cancion.query.order_by(desc(Cancion.favorita)).all()]
 
 class VistaCancion(Resource):
