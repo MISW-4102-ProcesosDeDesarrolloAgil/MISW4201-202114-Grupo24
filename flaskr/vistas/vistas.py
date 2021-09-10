@@ -4,6 +4,7 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 
+
 cancion_schema = CancionSchema()
 usuario_schema = UsuarioSchema()
 album_schema = AlbumSchema()
@@ -40,11 +41,6 @@ class VistaCancion(Resource):
         db.session.commit()
         return '',204
 
-class VistaAlbumesCanciones(Resource):
-    def get(self, id_cancion):
-        cancion = Cancion.query.get_or_404(id_cancion)
-        return [album_schema.dump(al) for al in cancion.albumes]
-
 class VistaSignIn(Resource):
     
     def post(self):
@@ -78,27 +74,6 @@ class VistaLogIn(Resource):
             token_de_acceso = create_access_token(identity = usuario.id)
             return {"mensaje":"Inicio de sesión exitoso", "token": token_de_acceso}
 
-class VistaAlbumsUsuario(Resource):
-
-    @jwt_required()
-    def post(self, id_usuario):
-        nuevo_album = Album(titulo=request.json["titulo"], anio=request.json["anio"], descripcion=request.json["descripcion"], medio=request.json["medio"])
-        usuario = Usuario.query.get_or_404(id_usuario)
-        usuario.albumes.append(nuevo_album)
-
-        try:
-            db.session.commit()
-        except IntegrityError:
-            db.session.rollback()
-            return 'El usuario ya tiene un album con dicho nombre',409
-
-        return album_schema.dump(nuevo_album)
-
-    @jwt_required()
-    def get(self, id_usuario):
-        usuario = Usuario.query.get_or_404(id_usuario)
-        return [album_schema.dump(al) for al in usuario.albumes]
-
 class VistaCancionesAlbum(Resource):
 
     def post(self, id_album):
@@ -121,24 +96,4 @@ class VistaCancionesAlbum(Resource):
     def get(self, id_album):
         album = Album.query.get_or_404(id_album)
         return [cancion_schema.dump(ca) for ca in album.canciones]
-
-class VistaAlbum(Resource):
-
-    def get(self, id_album):
-        return album_schema.dump(Album.query.get_or_404(id_album))
-
-    def put(self, id_album):
-        album = Album.query.get_or_404(id_album)
-        album.titulo = request.json.get("titulo",album.titulo)
-        album.anio = request.json.get("anio", album.anio)
-        album.descripcion = request.json.get("descripcion", album.descripcion)
-        album.medio = request.json.get("medio", album.medio)
-        db.session.commit()
-        return album_schema.dump(album)
-
-    def delete(self, id_album):
-        album = Album.query.get_or_404(id_album)
-        db.session.delete(album)
-        db.session.commit()
-        return '',204
 
