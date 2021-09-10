@@ -1,17 +1,45 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CancionListComponent } from './cancion-list.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
+import { CancionService } from '../cancion.service';
+import { of } from 'rxjs';
+import { Cancion } from '../cancion';
 
 describe('CancionListComponent', () => {
   let component: CancionListComponent;
   let fixture: ComponentFixture<CancionListComponent>;
 
-  beforeEach(async(() => {
+  let cancionService = jasmine.createSpyObj('CancionService', ['getCanciones', 'getAlbumesCancion']);
+  cancionService.getCanciones.and.returnValue(of([new Cancion(1, 'prueba', 3, 35, 'interprete', true, [])]));
+  cancionService.getAlbumesCancion.and.returnValue(of([]));
+
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CancionListComponent ]
+      imports: [
+        HttpClientModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        ToastrModule.forRoot({
+          positionClass :'toast-bottom-right'
+        })
+      ],
+      declarations: [ CancionListComponent ],
+      providers: [
+        ToastrService,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {params: {userId: '123'}}
+          }
+        },
+        {provide : CancionService, useValue: cancionService}
+      ],
     })
     .compileComponents();
   }));
@@ -22,7 +50,11 @@ describe('CancionListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Creación del componente', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Verificación de favorita', () => {
+    expect(component.mostrarCanciones[0].favorita).toBe(true);
   });
 });
