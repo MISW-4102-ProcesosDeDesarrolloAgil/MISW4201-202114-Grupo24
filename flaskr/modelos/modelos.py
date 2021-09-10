@@ -14,6 +14,13 @@ class Medio(enum.Enum):
    CASETE = 2
    CD = 3
 
+class Genero(enum.Enum):
+    SALSA =1
+    ROCK =2
+    POP = 3
+    BALADA = 4
+    CLASICA = 5
+    
 class Cancion(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     titulo = db.Column(db.String(128))
