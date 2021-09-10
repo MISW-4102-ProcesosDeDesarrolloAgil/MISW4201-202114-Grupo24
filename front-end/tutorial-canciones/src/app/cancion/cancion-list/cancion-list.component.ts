@@ -59,14 +59,33 @@ export class CancionListComponent implements OnInit {
     }
   }
 
+  /**
+   * Busca las canciones por el nombre ingresado y las ordena por favorita
+   *
+   * @param busqueda nombre de la canción
+   */
   buscarCancion(busqueda: string){
     let cancionesBusqueda: Array<Cancion> = []
+
+    //Busca por nombre
     this.canciones.map( cancion => {
       if(cancion.titulo.toLocaleLowerCase().includes(busqueda.toLocaleLowerCase())){
         cancionesBusqueda.push(cancion)
       }
     })
-    this.mostrarCanciones = cancionesBusqueda
+
+    //Ordena por favorita
+    this.mostrarCanciones = cancionesBusqueda.sort((cancionUno: Cancion, cancionDos: Cancion): number => {
+      let retorno = 0
+
+      if(cancionUno.favorita && !cancionDos.favorita) {
+        retorno = -1
+      }else if(!cancionUno.favorita && cancionDos.favorita) {
+        retorno = 1
+      }
+
+      return retorno
+    })
   }
 
   eliminarCancion(){
