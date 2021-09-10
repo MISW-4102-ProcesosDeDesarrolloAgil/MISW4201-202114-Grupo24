@@ -24,6 +24,7 @@ class Cancion(db.Model):
     ## @farojasp1 se adiciona campo para marca favorita - HU25
     favorita = db.Column(db.Boolean)
 
+"""Se adjunta atributo genero @William Sanchez"""
 class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(128))
@@ -32,6 +33,7 @@ class Album(db.Model):
     medio = db.Column(db.Enum(Medio))
     usuario = db.Column(db.Integer, db.ForeignKey("usuario.id"))
     canciones = db.relationship('Cancion', secondary = 'album_cancion', back_populates="albumes")
+    genero = db.Column(db.Enum(Genero))
     
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,9 +52,11 @@ class CancionSchema(SQLAlchemyAutoSchema):
          model = Cancion
          include_relationships = True
          load_instance = True
-
+         
+"""Se adjunta atributo genero @William Sanchez"""
 class AlbumSchema(SQLAlchemyAutoSchema):
     medio = EnumADiccionario(attribute=("medio"))
+    genero = EnumADiccionario(attribute=("genero"))
     class Meta:
          model = Album
          include_relationships = True
