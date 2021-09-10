@@ -36,3 +36,4 @@ jobs:
           MERGE_LABELS: "auto-merge"
           UPDATE_LABELS: "auto-merge"
           MERGE_COMMIT_MESSAGE: "pull-request-title-and-description"
+          MERGE_METHOD: "squash"
