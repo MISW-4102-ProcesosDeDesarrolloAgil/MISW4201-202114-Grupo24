@@ -56,8 +56,8 @@
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.3.2"
   },
-  "engines": {
+"engines": {
     "node": "12.14",
-    "npm": "6.4.1"
-  }
+      "npm": "6.4.1"
+  },
 }
