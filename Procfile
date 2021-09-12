@@ -1,2 +1,3 @@
-web: gunicorn flaskr.app:app
 web: node server.js
+web: gunicorn flaskr.app:app
+
