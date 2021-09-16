@@ -46,8 +46,9 @@ describe('CancionCreateComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Valor inicial de favorita', () => {
+  it('Valores iniciales campos', () => {
     expect(component.cancionForm.get('favorita')?.value).toBe(false);
+    expect(component.cancionForm.get('genero')?.value).toBe('');
   });
 
   it('Establece el valor a favorita', () => {
