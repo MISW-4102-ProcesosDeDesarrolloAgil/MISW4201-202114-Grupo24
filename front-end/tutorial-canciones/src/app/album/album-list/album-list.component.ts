@@ -107,7 +107,11 @@ export class AlbumListComponent implements OnInit {
     let albumesBusqueda: Array<Album> = []
     if(!this.generoEscogido){
       this.albumes.map( albu => {
-        if( albu.titulo.toLocaleLowerCase().includes(busqueda.toLowerCase())){
+        if( albu.titulo.toLocaleLowerCase().includes(busqueda.toLowerCase()) || albu.canciones.forEach(function (value) {
+          if(value.interprete.toLowerCase().includes(busqueda.toLowerCase())){
+            albumesBusqueda.push(albu)
+          }
+        })){
           albumesBusqueda.push(albu)
         }
       })
