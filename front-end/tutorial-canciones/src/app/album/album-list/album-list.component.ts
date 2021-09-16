@@ -103,6 +103,7 @@ export class AlbumListComponent implements OnInit {
     return interpretes
   }
 
+  /*Se ajusta el metodo de filtrado de nombre album por interprete y genero @William Sanchez */
   buscarAlbum(busqueda: string){
     let albumesBusqueda: Array<Album> = []
     if(!this.generoEscogido){
@@ -125,6 +126,7 @@ export class AlbumListComponent implements OnInit {
     this.mostrarAlbumes = albumesBusqueda
   }
 
+  /*Metodo de filtrado para el genero @Willima Sanchez  */
   buscarAlbumGenero(genero: string){
     this.generoEscogido = genero
     let albumesBusqueda: Array<Album> = []
