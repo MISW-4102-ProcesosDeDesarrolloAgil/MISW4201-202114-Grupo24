@@ -19,11 +19,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Correr pruebas
-      id: correr-pruebas
+    - name: Ejecutar Flask run
       run: |
         cd 'flaskr'
         flask run
+    - name: Correr pruebas
+      id: correr-pruebas
+      run: |
         cd ..
         cd 'tests'
         python -m unittest -v
