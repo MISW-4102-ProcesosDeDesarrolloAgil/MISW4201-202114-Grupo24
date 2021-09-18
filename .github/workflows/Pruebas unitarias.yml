@@ -22,7 +22,7 @@ jobs:
     - name: Correr pruebas
       id: correr-pruebas
       run: |
-        cd '.\tests'
+        cd 'tests'
         python -m unittest -v
     - name: Validar resultado con errores
       if: ${{ failure() }}
