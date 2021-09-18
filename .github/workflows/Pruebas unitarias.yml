@@ -21,7 +21,9 @@ jobs:
         pip install -r requirements.txt
     - name: Correr pruebas
       id: correr-pruebas
-      run: python -m unittest -v
+      run: |
+        cd '.\tests'
+        python -m unittest -v
     - name: Validar resultado con errores
       if: ${{ failure() }}
       env:
