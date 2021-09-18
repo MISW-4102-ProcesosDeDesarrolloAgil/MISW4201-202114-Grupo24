@@ -57,4 +57,14 @@ describe('CancionListComponent', () => {
   it('Verificación de favorita', () => {
     expect(component.mostrarCanciones[0].favorita).toBe(true);
   });
+
+  it('Busqueda por nombre', () => {
+    component.buscarCancion('prue');
+    expect(component.mostrarCanciones[0].titulo).toBe('prueba');
+  });
+
+  it('Busqueda por interprete', () => {
+    component.buscarCancion('inter');
+    expect(component.mostrarCanciones[0].titulo).toBe('prueba');
+  });
 });
