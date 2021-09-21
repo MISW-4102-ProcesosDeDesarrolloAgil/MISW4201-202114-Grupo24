@@ -23,7 +23,7 @@ jobs:
       id: correr-pruebas
       run: |
         cd 'flaskr'
-        nohup run flask
+        flask run
         cd..
         cd 'tests'
         python -m unittest -v
