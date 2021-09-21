@@ -3,20 +3,24 @@ from ..modelos import db, Cancion, CancionSchema, Album
 from flask_restful import Resource
 from sqlalchemy import desc
 
-
 cancion_schema = CancionSchema()
 
 class VistaCanciones(Resource):
 
     def post(self):
-        nueva_cancion = Cancion(titulo=request.json["titulo"], minutos=request.json["minutos"], 
-                        segundos=request.json["segundos"], interprete=request.json["interprete"], favorita=request.json["favorita"])
+        nueva_cancion = Cancion(titulo=request.json["titulo"], 
+                                minutos=request.json["minutos"], 
+                                segundos=request.json["segundos"], 
+                                interprete=request.json["interprete"], 
+                                favorita=request.json["favorita"],
+                                genero=request.json["genero"]
+                                )
         db.session.add(nueva_cancion)
         db.session.commit()
         return cancion_schema.dump(nueva_cancion)
 
     def get(self):
-        ## @farojasp1 se adiciona ordenamiento por marca favorita - HU26
+        """ @farojasp1 se adiciona ordenamiento por marca favorita - HU26 """
         return [cancion_schema.dump(ca) for ca in Cancion.query.order_by(desc(Cancion.favorita)).all()]
 
 class VistaCancion(Resource):
@@ -30,8 +34,10 @@ class VistaCancion(Resource):
         cancion.minutos = request.json.get("minutos",cancion.minutos)
         cancion.segundos = request.json.get("segundos",cancion.segundos)
         cancion.interprete = request.json.get("interprete",cancion.interprete)
-        ## @farojasp1 se adiciona campo para marca favorita - HU25
+        """ @farojasp1 se adiciona campo para marca favorita - HU25 """
         cancion.favorita =request.json.get("favorita",cancion.favorita)
+        """ @farojasp1 se adiciona campo genero a la cancion - HU31 """
+        cancion.genero = request.json.get("genero",cancion.genero)
         db.session.commit()
         return cancion_schema.dump(cancion)
 
@@ -64,4 +70,3 @@ class VistaCancionesAlbum(Resource):
     def get(self, id_album):
         album = Album.query.get_or_404(id_album)
         return [cancion_schema.dump(ca) for ca in album.canciones]
-
