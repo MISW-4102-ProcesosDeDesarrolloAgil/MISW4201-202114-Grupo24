@@ -30,7 +30,7 @@ jobs:
     - name: Ejecutar pruebas
       id: correr-pruebas 
       run: |
-        cd..
+        cd ..
         cd 'tests'
         python -m unittest 
     - name: Validar resultado con errores
