@@ -22,6 +22,8 @@ jobs:
     - name: Correr pruebas
       id: correr-pruebas
       run: |
+        cd 'flaskr' && flask run &
+        cd..
         cd 'tests'
         python -m unittest -v
     - name: Validar resultado con errores
