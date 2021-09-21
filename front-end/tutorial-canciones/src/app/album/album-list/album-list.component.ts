@@ -106,12 +106,11 @@ export class AlbumListComponent implements OnInit {
   /*Se ajusta el metodo de filtrado de nombre album por interprete y genero @William Sanchez */
   buscarAlbum(busqueda: string){
     let albumesBusqueda: Array<Album> = []
-    console.log('Valor Genero', this.generoEscogido)
     if(!this.generoEscogido || this.generoEscogido == 'undefined'){
       this.albumes.map( albu => {
-        console.log('canciones', albu.canciones)
+        this.onSelect(albu, this.indiceSeleccionado)
         if( albu.titulo.toLocaleLowerCase().includes(busqueda.toLowerCase()) || albu.canciones.forEach(function (value){
-          if(value.interprete.toLowerCase().includes(busqueda.toLowerCase())){
+          if(value.interprete && value.interprete.toLowerCase().includes(busqueda.toLowerCase())){
              albumesBusqueda.push(albu)
           }
         })){
