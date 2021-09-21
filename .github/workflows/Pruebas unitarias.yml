@@ -23,6 +23,7 @@ jobs:
       id: correr-pruebas
       run: |
         cd 'flaskr' && flask run &
+        sleep 2
         cd..
         cd 'tests'
         python -m unittest -v
