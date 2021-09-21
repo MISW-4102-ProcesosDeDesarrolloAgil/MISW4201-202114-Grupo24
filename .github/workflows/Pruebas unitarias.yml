@@ -47,14 +47,7 @@ jobs:
       id: cubrimiento
       run: |
           coverage run -m unittest 
-          coverage report -m
-    env:
-        FLASK_ENV: development
-        API_HOST: 0.0.0.0
-        FLASK_APP: app.py
-        DB_NAME: tutorial_canciones
-        DB_HOST: localhost
-        CI: true      
+          coverage report -m    
           
     
 
