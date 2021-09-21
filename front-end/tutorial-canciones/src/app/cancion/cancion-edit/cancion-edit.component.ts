@@ -52,13 +52,14 @@ export class CancionEditComponent implements OnInit {
       this.token = this.router.snapshot.params.userToken
       this.cancionService.getCancion(this.router.snapshot.params.cancionId)
       .subscribe(cancion => {
+        console.log(cancion)
         this.cancionId = cancion.id
         this.cancionForm = this.formBuilder.group({
           titulo: [cancion.titulo, [Validators.required, Validators.maxLength(128)]],
           minutos: [cancion.minutos, [Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(2)]],
           segundos: [cancion.segundos, [Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(2)]],
           interprete: [cancion.interprete, [Validators.required, Validators.maxLength(128)]],
-          genero: [cancion.genero, [Validators.required]],
+          genero: [cancion.genero.llave, [Validators.required]],
           favorita: [cancion.favorita]
         })
       })
