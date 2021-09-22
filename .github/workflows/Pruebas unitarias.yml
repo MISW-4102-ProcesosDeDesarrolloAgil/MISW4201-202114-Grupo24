@@ -21,14 +21,16 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Correr pruebas
-      id: correr-pruebas
+        pip install unittest2
+    - name: Ejecutar Flask
+      id: ejecutar-flask
       run: |
         cd 'flaskr' && flask run &
         sleep 2
-        cd..
-        cd 'tests'
-        python -m unittest -v
+    - name: Ejecutar pruebas
+      id: correr-pruebas 
+      run: |
+        python -m unittest discover -s tests -v 
     - name: Validar resultado con errores
       if: ${{ failure() }}
       env:
@@ -43,14 +45,7 @@ jobs:
       id: cubrimiento
       run: |
           coverage run -m unittest 
-          coverage report -m
-    env:
-        FLASK_ENV: development
-        API_HOST: 0.0.0.0
-        FLASK_APP: app.py
-        DB_NAME: tutorial_canciones
-        DB_HOST: localhost
-        CI: true      
+          coverage report -m    
           
     
 
