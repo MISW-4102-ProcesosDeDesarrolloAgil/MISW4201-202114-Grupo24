@@ -1,16 +1,10 @@
-from flaskr.vistas.vistas import VistaGenero
 import unittest
 import requests
 import responses
 import json
-from flaskr.vistas import VistaAlbum
 from unittest.mock import patch
 
 class vista_album_test(unittest.TestCase):
-
-    def setUp(self):
-        self.app = VistaAlbum
-        self.app = VistaGenero
 
     @patch('requests.post')
     def testInsertarAlbumConGenero(self, mock_post):
