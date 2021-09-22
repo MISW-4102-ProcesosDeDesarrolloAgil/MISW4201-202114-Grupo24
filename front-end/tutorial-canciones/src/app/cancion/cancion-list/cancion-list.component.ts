@@ -3,6 +3,7 @@ import { Cancion } from '../cancion';
 import { CancionService } from '../cancion.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Generos } from '../cancion'
 
 @Component({
   selector: 'app-cancion-list',
@@ -24,6 +25,26 @@ export class CancionListComponent implements OnInit {
   mostrarCanciones: Array<Cancion>
   cancionSeleccionada: Cancion
   indiceSeleccionado: number = 0
+  generoSeleccionado: string
+  nombreInterpreteSeleccionado: string
+
+  generos:Array<Generos> = [
+    {
+      llave:"SALSA",
+    },
+    {
+      llave:"ROCK",
+    },
+    {
+      llave:"POP",
+    },
+    {
+      llave:"BALADA",
+    },
+    {
+      llave:"CLASICA",
+    }
+  ]
 
   /**
    * Inicializa la información del componente
@@ -72,20 +93,41 @@ export class CancionListComponent implements OnInit {
   }
 
   /**
-   * Busca las canciones por el nombre y/o interprete ingresado
+   * Recibe el evento cuando cambia el valor del género seleccionado e invoca
+   * la función para buscar canciones
+   *
+   * @param event Información del evento generado
+   */
+  onChangeGenero(event: any){
+    this.generoSeleccionado = event.target.value
+    this.buscarCancion(this.nombreInterpreteSeleccionado ? this.nombreInterpreteSeleccionado : "")
+  }
+
+  /**
+   * Busca las canciones por el nombre, interprete y género si fue seleccionado
    *
    * @param busqueda nombre y/o interprete de la canción
    */
-  buscarCancion(busqueda: string){
+  buscarCancion(busqueda: string) {
     let cancionesBusqueda: Array<Cancion> = []
+    this.nombreInterpreteSeleccionado = busqueda
 
-    //Busca por nombre
-    this.canciones.map( cancion => {
-      if(cancion.titulo.toLocaleLowerCase().includes(busqueda.toLocaleLowerCase()) ||
-      cancion.interprete.toLocaleLowerCase().includes(busqueda.toLocaleLowerCase())){
-        cancionesBusqueda.push(cancion)
-      }
-    })
+    if(this.generoSeleccionado) {
+      this.canciones.map( cancion => {
+        if((cancion.titulo.toLocaleLowerCase().includes(this.nombreInterpreteSeleccionado.toLocaleLowerCase()) ||
+        cancion.interprete.toLocaleLowerCase().includes(this.nombreInterpreteSeleccionado.toLocaleLowerCase())) &&
+        cancion.genero.llave === this.generoSeleccionado){
+          cancionesBusqueda.push(cancion)
+        }
+      })
+    }else {
+      this.canciones.map( cancion => {
+        if(cancion.titulo.toLocaleLowerCase().includes(this.nombreInterpreteSeleccionado.toLocaleLowerCase()) ||
+        cancion.interprete.toLocaleLowerCase().includes(this.nombreInterpreteSeleccionado.toLocaleLowerCase())){
+          cancionesBusqueda.push(cancion)
+        }
+      })
+    }
 
     this.mostrarCanciones = cancionesBusqueda;
   }

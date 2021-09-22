@@ -15,9 +15,18 @@
           </div>
           <div class="card-body">
 
-            <div class="input-group my-2">
-              <input #busqueda type="search" class="form-control" placeholder="Buscar canciones" aria-label="Search" (keyup)="buscarCancion(busqueda.value)">
+            <div class="input-group my-2" style="flex-direction: column;">
+              <select class="form-select" style="width: 100%; margin-bottom: 5px;" (change)="onChangeGenero($event)">
+                <option value="">Selecciona el género de la canción</option>
+                <option *ngFor="let genero of generos" value={{genero.llave}}>{{genero.llave}}</option>
+              </select>
+
+              <input #busqueda type="search" class="form-control" placeholder="Buscar canciones" aria-label="Search" (keyup)="buscarCancion(busqueda.value)" style="width: 100%;">
             </div>
+
+            <!--div class="input-group my-2">
+              <input #busqueda type="search" class="form-control" placeholder="Buscar canciones" aria-label="Search" (keyup)="buscarCancion(busqueda.value)">
+            </div-->
 
             <table class="table table-hover mb-0" aria-describedby="colecName">
               <tbody>
