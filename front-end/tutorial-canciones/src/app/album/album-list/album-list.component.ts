@@ -103,11 +103,17 @@ export class AlbumListComponent implements OnInit {
     return interpretes
   }
 
+  /*Se ajusta el metodo de filtrado de nombre album por interprete y genero @William Sanchez */
   buscarAlbum(busqueda: string){
     let albumesBusqueda: Array<Album> = []
-    if(!this.generoEscogido){
+    if(!this.generoEscogido || this.generoEscogido == 'undefined'){
       this.albumes.map( albu => {
-        if( albu.titulo.toLocaleLowerCase().includes(busqueda.toLowerCase())){
+        this.onSelect(albu, this.indiceSeleccionado)
+        if( albu.titulo.toLocaleLowerCase().includes(busqueda.toLowerCase()) || albu.canciones.forEach(function (value){
+          if(value.interprete && value.interprete.toLowerCase().includes(busqueda.toLowerCase())){
+             albumesBusqueda.push(albu)
+          }
+        })){
           albumesBusqueda.push(albu)
         }
       })
@@ -121,15 +127,20 @@ export class AlbumListComponent implements OnInit {
     this.mostrarAlbumes = albumesBusqueda
   }
 
+  /*Metodo de filtrado para el genero @Willima Sanchez  */
   buscarAlbumGenero(genero: string){
     this.generoEscogido = genero
-    let albumesBusqueda: Array<Album> = []
-    this.albumes.map(albu =>{
-      if(albu.genero.llave.toLowerCase().includes(genero.toLowerCase())){
-        albumesBusqueda.push(albu)
-      }
-    })
-    this.mostrarAlbumes = albumesBusqueda
+    if(genero == 'undefined'){
+      this.getAlbumes()
+    }else{
+      let albumesBusqueda: Array<Album> = []
+      this.albumes.map(albu =>{
+        if(albu.genero.llave.toLowerCase().includes(genero.toLowerCase())){
+          albumesBusqueda.push(albu)
+        }
+      })
+      this.mostrarAlbumes = albumesBusqueda
+    }
   }
 
   irCrearAlbum(){
