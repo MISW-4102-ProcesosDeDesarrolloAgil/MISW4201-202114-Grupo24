@@ -9,13 +9,13 @@ import { Album } from '../album/album';
 })
 export class CancionService {
 
-  private backUrl: string = "http://localhost:5000"
+  private backUrl: string = "https://ionic-grupo24.herokuapp.com"
 
   constructor(private http: HttpClient) { }
 
   getCancionesAlbum(idAlbum: number, token: string): Observable<Cancion[]>{
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`       
+      'Authorization': `Bearer ${token}`
     })
     return this.http.get<Cancion[]>(`${this.backUrl}/album/${idAlbum}/canciones`, {headers: headers})
   }
