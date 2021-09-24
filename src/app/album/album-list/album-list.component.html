@@ -14,9 +14,17 @@
           </div>
         </div>
         <div class="card-body">
+          <!--Se realiza el listado de filtro por genero @William Sanchez-->
+          <div class="nput-group my-2">
+                <select class="form-select" formControlName="genero" (change)="buscarAlbumGenero($any($event.target).value)">
+                  <option class="dropdown-item" selected value="undefined">Selecciona el género a filtrar</option>
+                  <option *ngFor="let genero of generos" value={{genero.llave}}>{{genero.llave}}</option>
+                </select>
+          </div>
+          <!--Se realiza la adición de busqueda en el holder de interprete @William Sanchez-->
 
           <div class="input-group my-2">
-            <input #busqueda type="search" class="form-control" placeholder="Buscar álbumes" aria-label="Search" (keyup)="buscarAlbum(busqueda.value)">
+            <input #busqueda type="search" class="form-control" placeholder="Buscar álbumes o interprete" aria-label="Search" (keyup)="buscarAlbum(busqueda.value)">
           </div>
 
           <table class="table table-hover mb-0" aria-describedby="colecName">
@@ -27,7 +35,7 @@
                 </tr>
             </tbody>
           </table>
-          
+
         </div>
       </div>
     </div>

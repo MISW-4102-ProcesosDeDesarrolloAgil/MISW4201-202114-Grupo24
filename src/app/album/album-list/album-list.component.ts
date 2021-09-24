@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from "ngx-toastr";
-import { Album, Cancion } from '../album';
+import { Album, Cancion, Generos } from '../album';
 import { AlbumService } from '../album.service';
 
 @Component({
@@ -17,13 +17,33 @@ export class AlbumListComponent implements OnInit {
     private toastr: ToastrService,
     private routerPath: Router
   ) { }
-  
+
   userId: number
   token: string
   albumes: Array<Album>
   mostrarAlbumes: Array<Album>
   albumSeleccionado: Album
   indiceSeleccionado: number
+  generoEscogido: string
+
+  /*Se lleva a cabo la lista de Generos */
+  generos:Array<Generos> = [
+    {
+      llave:"SALSA",
+    },
+    {
+      llave:"ROCK",
+    },
+    {
+      llave:"POP",
+    },
+    {
+      llave:"BALADA",
+    },
+    {
+      llave:"CLASICA",
+    }
+  ]
 
   ngOnInit() {
     if(!parseInt(this.router.snapshot.params.userId) || this.router.snapshot.params.userToken === " "){
@@ -57,7 +77,7 @@ export class AlbumListComponent implements OnInit {
         this.showError("Ha ocurrido un error. " + error.message)
       }
     })
-    
+
   }
 
   onSelect(a: Album, index: number){
@@ -83,14 +103,44 @@ export class AlbumListComponent implements OnInit {
     return interpretes
   }
 
+  /*Se ajusta el metodo de filtrado de nombre album por interprete y genero @William Sanchez */
   buscarAlbum(busqueda: string){
     let albumesBusqueda: Array<Album> = []
-    this.albumes.map( albu => {
-      if( albu.titulo.toLocaleLowerCase().includes(busqueda.toLowerCase())){
+    if(!this.generoEscogido || this.generoEscogido == 'undefined'){
+      this.albumes.map( albu => {
+        this.onSelect(albu, this.indiceSeleccionado)
+        if( albu.titulo.toLocaleLowerCase().includes(busqueda.toLowerCase()) || albu.canciones.forEach(function (value){
+          if(value.interprete && value.interprete.toLowerCase().includes(busqueda.toLowerCase())){
+             albumesBusqueda.push(albu)
+          }
+        })){
+          albumesBusqueda.push(albu)
+        }
+      })
+    }else{
+      this.albumes.map( albu => {
+      if( albu.titulo.toLocaleLowerCase().includes(busqueda.toLowerCase()) && albu.genero.llave.toLowerCase().includes(this.generoEscogido)){
         albumesBusqueda.push(albu)
       }
     })
+  }
     this.mostrarAlbumes = albumesBusqueda
+  }
+
+  /*Metodo de filtrado para el genero @Willima Sanchez  */
+  buscarAlbumGenero(genero: string){
+    this.generoEscogido = genero
+    if(genero == 'undefined'){
+      this.getAlbumes()
+    }else{
+      let albumesBusqueda: Array<Album> = []
+      this.albumes.map(albu =>{
+        if(albu.genero.llave.toLowerCase().includes(genero.toLowerCase())){
+          albumesBusqueda.push(albu)
+        }
+      })
+      this.mostrarAlbumes = albumesBusqueda
+    }
   }
 
   irCrearAlbum(){

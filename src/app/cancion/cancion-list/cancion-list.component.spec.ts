@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CancionService } from '../cancion.service';
 import { of } from 'rxjs';
 import { Cancion } from '../cancion';
+import { Generos } from 'src/app/album/album';
 
 describe('CancionListComponent', () => {
   let component: CancionListComponent;
@@ -56,5 +57,15 @@ describe('CancionListComponent', () => {
 
   it('Verificación de favorita', () => {
     expect(component.mostrarCanciones[0].favorita).toBe(true);
+  });
+
+  it('Busqueda por nombre', () => {
+    component.buscarCancion('prue');
+    expect(component.mostrarCanciones[0].titulo).toBe('prueba');
+  });
+
+  it('Busqueda por interprete', () => {
+    component.buscarCancion('inter');
+    expect(component.mostrarCanciones[0].titulo).toBe('prueba');
   });
 });
