@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Cancion } from '../cancion';
 import { CancionService } from '../cancion.service';
+import { Generos } from '../cancion'
 
 @Component({
   selector: 'app-cancion-edit',
@@ -16,6 +17,24 @@ export class CancionEditComponent implements OnInit {
   token: string;
   cancionId: number;
   cancionForm!: FormGroup;
+
+  generos:Array<Generos> = [
+    {
+      llave:"SALSA",
+    },
+    {
+      llave:"ROCK",
+    },
+    {
+      llave:"POP",
+    },
+    {
+      llave:"BALADA",
+    },
+    {
+      llave:"CLASICA",
+    }
+  ]
 
   constructor(
     private cancionService: CancionService,
@@ -33,12 +52,14 @@ export class CancionEditComponent implements OnInit {
       this.token = this.router.snapshot.params.userToken
       this.cancionService.getCancion(this.router.snapshot.params.cancionId)
       .subscribe(cancion => {
+        console.log(cancion)
         this.cancionId = cancion.id
         this.cancionForm = this.formBuilder.group({
           titulo: [cancion.titulo, [Validators.required, Validators.maxLength(128)]],
           minutos: [cancion.minutos, [Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(2)]],
           segundos: [cancion.segundos, [Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(2)]],
           interprete: [cancion.interprete, [Validators.required, Validators.maxLength(128)]],
+          genero: [cancion.genero.llave, [Validators.required]],
           favorita: [cancion.favorita]
         })
       })

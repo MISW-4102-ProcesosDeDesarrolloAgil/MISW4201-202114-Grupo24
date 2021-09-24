@@ -3,6 +3,7 @@ import { Cancion } from '../cancion';
 import { CancionService } from '../cancion.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Generos } from '../cancion'
 
 @Component({
   selector: 'app-cancion-list',
@@ -24,7 +25,30 @@ export class CancionListComponent implements OnInit {
   mostrarCanciones: Array<Cancion>
   cancionSeleccionada: Cancion
   indiceSeleccionado: number = 0
+  generoSeleccionado: string
+  nombreInterpreteSeleccionado: string
 
+  generos:Array<Generos> = [
+    {
+      llave:"SALSA",
+    },
+    {
+      llave:"ROCK",
+    },
+    {
+      llave:"POP",
+    },
+    {
+      llave:"BALADA",
+    },
+    {
+      llave:"CLASICA",
+    }
+  ]
+
+  /**
+   * Inicializa la información del componente
+   */
   ngOnInit() {
     if(!parseInt(this.router.snapshot.params.userId) || this.router.snapshot.params.userToken === " "){
       this.showError("No hemos podido identificarlo, por favor vuelva a iniciar sesión.")
@@ -36,6 +60,9 @@ export class CancionListComponent implements OnInit {
     }
   }
 
+  /**
+   * Invoca el servicio que retorna el listado de canciones
+   */
   getCanciones():void{
     this.cancionService.getCanciones()
     .subscribe(canciones => {
@@ -45,6 +72,12 @@ export class CancionListComponent implements OnInit {
     })
   }
 
+  /**
+   * Responde el evento de seleccionar una canción de la lista
+   *
+   * @param cancion Información de la canción
+   * @param indice Indice de la canción en la lista
+   */
   onSelect(cancion: Cancion, indice: number){
     this.indiceSeleccionado = indice
     this.cancionSeleccionada = cancion
@@ -60,34 +93,48 @@ export class CancionListComponent implements OnInit {
   }
 
   /**
-   * Busca las canciones por el nombre ingresado y las ordena por favorita
+   * Recibe el evento cuando cambia el valor del género seleccionado e invoca
+   * la función para buscar canciones
    *
-   * @param busqueda nombre de la canción
+   * @param event Información del evento generado
    */
-  buscarCancion(busqueda: string){
-    let cancionesBusqueda: Array<Cancion> = []
-
-    //Busca por nombre
-    this.canciones.map( cancion => {
-      if(cancion.titulo.toLocaleLowerCase().includes(busqueda.toLocaleLowerCase())){
-        cancionesBusqueda.push(cancion)
-      }
-    })
-
-    //Ordena por favorita
-    this.mostrarCanciones = cancionesBusqueda.sort((cancionUno: Cancion, cancionDos: Cancion): number => {
-      let retorno = 0
-
-      if(cancionUno.favorita && !cancionDos.favorita) {
-        retorno = -1
-      }else if(!cancionUno.favorita && cancionDos.favorita) {
-        retorno = 1
-      }
-
-      return retorno
-    })
+  onChangeGenero(event: any){
+    this.generoSeleccionado = event.target.value
+    this.buscarCancion(this.nombreInterpreteSeleccionado ? this.nombreInterpreteSeleccionado : "")
   }
 
+  /**
+   * Busca las canciones por el nombre, interprete y género si fue seleccionado
+   *
+   * @param busqueda nombre y/o interprete de la canción
+   */
+  buscarCancion(busqueda: string) {
+    let cancionesBusqueda: Array<Cancion> = []
+    this.nombreInterpreteSeleccionado = busqueda
+
+    if(this.generoSeleccionado) {
+      this.canciones.map( cancion => {
+        if((cancion.titulo.toLocaleLowerCase().includes(this.nombreInterpreteSeleccionado.toLocaleLowerCase()) ||
+        cancion.interprete.toLocaleLowerCase().includes(this.nombreInterpreteSeleccionado.toLocaleLowerCase())) &&
+        cancion.genero.llave === this.generoSeleccionado){
+          cancionesBusqueda.push(cancion)
+        }
+      })
+    }else {
+      this.canciones.map( cancion => {
+        if(cancion.titulo.toLocaleLowerCase().includes(this.nombreInterpreteSeleccionado.toLocaleLowerCase()) ||
+        cancion.interprete.toLocaleLowerCase().includes(this.nombreInterpreteSeleccionado.toLocaleLowerCase())){
+          cancionesBusqueda.push(cancion)
+        }
+      })
+    }
+
+    this.mostrarCanciones = cancionesBusqueda;
+  }
+
+  /**
+   * Invoca el servicio para eliminar una canción
+   */
   eliminarCancion(){
     this.cancionService.eliminarCancion(this.cancionSeleccionada.id)
     .subscribe(cancion => {

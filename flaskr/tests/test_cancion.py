@@ -18,7 +18,14 @@ class VistaCancionTestCase (unittest.TestCase):
 
     def test_crearCancion(self):
         """Prueba la insersion de cancion nueva"""
-        info = {"titulo": "De Musica Ligera","minutos": 3,"segundos": 30,"interprete": "Soda Stereo","favorita":True}
+        info = {
+                "titulo": "De Musica Ligera",
+                "minutos": 3,
+                "segundos": 30,
+                "interprete": "Soda Stereo",
+                "favorita": True,
+                "genero": "ROCK"
+                }
         resp = requests.post("http://localhost:5000/canciones", 
                             data=json.dumps(info), 
                             headers={'Content-Type': 'application/json'})
@@ -26,8 +33,15 @@ class VistaCancionTestCase (unittest.TestCase):
 
     def test_modificarCancion(self):
         """Prueba la modificacion de cancion"""
-        info = {"titulo": "De Musica Ligera","minutos": 2,"segundos": 45,"interprete": "Soda Stereo","favorita":False}
-        resp = requests.put("http://localhost:5000/cancion/2", 
+        info = {
+                "titulo": "De Musica Ligera",
+                "minutos": 3,
+                "segundos": 60,
+                "interprete": "Soda Stereo",
+                "favorita": False,
+                "genero": "POP"
+                }
+        resp = requests.put("http://localhost:5000/cancion/34", 
                             data=json.dumps(info), 
                             headers={'Content-Type': 'application/json'})
         self.assertEqual(resp.status_code, 200)
