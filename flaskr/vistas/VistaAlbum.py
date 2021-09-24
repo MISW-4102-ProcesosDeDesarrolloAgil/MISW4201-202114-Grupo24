@@ -1,8 +1,8 @@
 import json
-from flaskr.modelos.modelos import AlbumSchema, Album
-from flaskr.modelos.modelos import Genero
+from flaskr.modelos.ModeloAlbum import AlbumSchema, Album, Genero
 from flask import request
-from ..modelos import db, Cancion, Usuario
+from flaskr.modelos.ModeloCancion import db, Cancion 
+from flaskr.modelos.ModeloUsuario import Usuario
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import jwt_required

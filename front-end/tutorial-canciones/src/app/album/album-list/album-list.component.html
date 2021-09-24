@@ -17,7 +17,7 @@
           <!--Se realiza el listado de filtro por genero @William Sanchez-->
           <div class="nput-group my-2">
                 <select class="form-select" formControlName="genero" (change)="buscarAlbumGenero($any($event.target).value)">
-                  <option class="dropdown-item" selected value="undefined">Selecciona el genero a filtrar</option>
+                  <option class="dropdown-item" selected value="undefined">Selecciona el género a filtrar</option>
                   <option *ngFor="let genero of generos" value={{genero.llave}}>{{genero.llave}}</option>
                 </select>
           </div>

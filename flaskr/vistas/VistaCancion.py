@@ -1,5 +1,6 @@
 from flask import request
-from ..modelos import db, Cancion, CancionSchema, Album
+from flaskr.modelos.ModeloCancion import db, Cancion, CancionSchema 
+from flaskr.modelos.ModeloAlbum import Album
 from flask_restful import Resource
 from sqlalchemy import desc
 

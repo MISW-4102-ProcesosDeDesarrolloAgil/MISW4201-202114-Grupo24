@@ -1,5 +1,5 @@
 from flask import request
-from ..modelos import db, Usuario, UsuarioSchema
+from flaskr.modelos.ModeloUsuario import db, Usuario, UsuarioSchema
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token
 
