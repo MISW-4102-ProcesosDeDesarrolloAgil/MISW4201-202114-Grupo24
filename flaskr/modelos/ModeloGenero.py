@@ -6,5 +6,5 @@ db = SQLAlchemy()
 
 class Genero(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    descripcin = db.Column(db.String(128))
+    descripcion = db.Column(db.String(128))
     
